@@ -1,0 +1,28 @@
+[root]
+name = "csv_statistics"
+version = "0.0.1"
+dependencies = [
+ "csv 0.1.0 (git+https://github.com/BurntSushi/rust-csv#d4b2b469f9a9251f0efb038abf8a5137205d103d)",
+]
+
+[[package]]
+name = "csv"
+version = "0.1.0"
+source = "git+https://github.com/BurntSushi/rust-csv#d4b2b469f9a9251f0efb038abf8a5137205d103d"
+dependencies = [
+ "quickcheck 0.1.0 (git+git://github.com/BurntSushi/quickcheck#c64b4ebbafdb8521c3b20b58d2cd4b4020f45854)",
+]
+
+[[package]]
+name = "quickcheck"
+version = "0.1.0"
+source = "git+git://github.com/BurntSushi/quickcheck#c64b4ebbafdb8521c3b20b58d2cd4b4020f45854"
+dependencies = [
+ "quickcheck_macros 0.1.0 (git+git://github.com/BurntSushi/quickcheck#c64b4ebbafdb8521c3b20b58d2cd4b4020f45854)",
+]
+
+[[package]]
+name = "quickcheck_macros"
+version = "0.1.0"
+source = "git+git://github.com/BurntSushi/quickcheck#c64b4ebbafdb8521c3b20b58d2cd4b4020f45854"
+
