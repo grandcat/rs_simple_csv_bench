@@ -1,7 +1,7 @@
 extern crate csv;
 
 use std::io::{File};
-//use std::num::{sqrt};
+use std::num::{abs};
 use std::os;
 
 static CACHE_SIZE: uint = 16384;
@@ -51,25 +51,26 @@ fn main() {
         println!("Dataset {} with {} entries:", dataset_id, dataset.len());
         // Statistics about current dataset
         let (quantile_min, quantile_max) = get_quantiles(dataset);
-        println!("First & Last & 5% & 95% & avg & stdDev")
-        println!("{} & {} & {} & {} & {} & {}",
+        println!("First & Last & 5% & 95% & average & stdDev & avgMedianDev")
+        println!("{} & {} & {} & {} & {} & {} & {}",
                  get_first(dataset), get_last(dataset),
                  quantile_min, quantile_max,
-                 get_avg(dataset), get_variance(dataset).sqrt());
+                 get_avg(dataset), get_variance(dataset).sqrt(),
+                 get_average_abs_deviation(dataset));
 
         println!("-----------------------------")
     }
 }
 
-fn get_first(input : &Vec<int>) -> int {
+fn get_first(input: &Vec<int>) -> int {
     input[0]
 }
 
-fn get_last(input : &Vec<int>) -> int {
+fn get_last(input: &Vec<int>) -> int {
     input[input.len() - 1]
 }
 
-fn get_avg(input : &Vec<int>) -> f32 {
+fn get_avg(input: &Vec<int>) -> f32 {
     let mut sum = 0f32;
 
     for item in input.iter() {
@@ -79,7 +80,13 @@ fn get_avg(input : &Vec<int>) -> f32 {
     return sum / (input.len() as f32);
 }
 
-fn get_variance(input : &Vec<int>) -> f32 {
+fn get_median(input: &Vec<int>) -> int {
+    let midway = input.len() / 2;
+    // Result
+    input[midway]
+}
+
+fn get_variance(input: &Vec<int>) -> f32 {
     let avg: f32 = get_avg(input);
     let mut variance = 0f32;
 
@@ -91,6 +98,22 @@ fn get_variance(input : &Vec<int>) -> f32 {
     variance /= (input.len() - 1) as f32;
     // Result
     variance
+}
+
+/// Average absolute deviation about median
+///
+/// Implement http://en.wikipedia.org/wiki/Median_absolute_deviation instead
+fn get_average_abs_deviation(input: &Vec<int>) -> f32 {
+    let median = get_median(input);
+
+    let mut sum = 0i;
+    for item in input.iter() {
+        let diff = abs(item - median);
+        sum += diff;
+    }
+    let res = (sum as f32) / (input.len() as f32);
+    // Result
+    res
 }
 
 /// Calculate 5% and 95% quantiles
