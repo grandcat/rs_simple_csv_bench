@@ -51,12 +51,13 @@ fn main() {
         println!("Dataset {} with {} entries:", dataset_id, dataset.len());
         // Statistics about current dataset
         let (quantile_min, quantile_max) = get_quantiles(dataset);
-        println!("First & Last & 5% & 95% & average & stdDev & avgMedianDev")
-        println!("{} & {} & {} & {} & {} & {} & {}",
+        println!("First & Last & 5% & 95% & average & stdDev & avgMedianDev & medianDev")
+        println!("{} & {} & {} & {} & {} & {} & {} & {}",
                  get_first(dataset), get_last(dataset),
                  quantile_min, quantile_max,
                  get_avg(dataset), get_variance(dataset).sqrt(),
-                 get_average_abs_deviation(dataset));
+                 get_average_abs_deviation(dataset),
+                 get_median_abs_deviation(dataset));
 
         println!("-----------------------------")
     }
@@ -114,6 +115,20 @@ fn get_average_abs_deviation(input: &Vec<int>) -> f32 {
     let res = (sum as f32) / (input.len() as f32);
     // Result
     res
+}
+
+/// Median absolute deviation (MAD)
+fn get_median_abs_deviation(input: &Vec<int>) -> int {
+    let median = get_median(input);
+
+    let mut abs_deviations: Vec<int> = Vec::with_capacity(input.len());
+    for item in input.iter().map(|&x| abs(x - median)) {
+        abs_deviations.push(item);
+    }
+    // Sort new deviations to calculate the median
+    abs_deviations.sort_by(|a, b| compare_ints(a, b));
+    // Return median
+    get_median(&abs_deviations)
 }
 
 /// Calculate 5% and 95% quantiles
