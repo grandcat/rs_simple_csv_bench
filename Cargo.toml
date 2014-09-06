@@ -4,6 +4,6 @@ name = "csv_statistics"
 version = "0.0.1"
 authors = ["grandcat"]
 
-[dependencies.csv]
+[dependencies.rust-csv]
 
 git = "https://github.com/BurntSushi/rust-csv"
