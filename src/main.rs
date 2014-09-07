@@ -1,20 +1,33 @@
 extern crate csv;
 
+pub use csv::{Decoder,Encoder};
+use convert::convert_dispatch_latency;
+
 use std::io::{File};
 use std::num::{abs};
 use std::os;
 
-static CACHE_SIZE: uint = 16384;
+mod convert;
+
+pub static CACHE_SIZE: uint = 16384;
 
 fn main() {
     // Extract input file
     let args: Vec<String> = os::args();
-    if args.len() != 2 {
-      fail!("No input file provided. Please pass one as argument!");
+
+    match args.len() {
+        2 => show_statistics(args[1].as_slice()),
+        3 => convert_dispatch_latency(args[1].as_slice()),
+        _ => {
+            fail!("No input file provided. Please pass one as argument!");
+        }
     }
 
+}
+
+fn show_statistics(filename: &str) {
     // Open CSV file with statistics
-    let file = File::open(&Path::new(args[1].as_slice()));
+    let file = File::open(&Path::new(filename));
     let mut rdr = csv::Decoder::from_reader(file)
                                .separator(b';')
                                .enforce_same_length(false);
@@ -61,6 +74,7 @@ fn main() {
 
         println!("-----------------------------")
     }
+
 }
 
 fn get_first(input: &Vec<int>) -> int {
