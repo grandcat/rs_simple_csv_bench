@@ -6,4 +6,5 @@ authors = ["grandcat"]
 
 [dependencies.rust-csv]
 
-git = "https://github.com/BurntSushi/rust-csv"
+git = "https://github.com/kubkon/rust-csv"
+#git = "https://github.com/BurntSushi/rust-csv"
